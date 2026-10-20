@@ -3469,6 +3469,33 @@ bool RtApiAsio :: probeDeviceInfo( RtAudio::DeviceInfo &info )
     return false;
   }
 
+  // 2026-10-12 Brendan 
+  // Retrieve driver-provided channel names.
+  info.inputChannelNames.clear();
+  info.outputChannelNames.clear();
+
+  for (long i = 0; i < inputChannels; ++i) {
+	  ASIOChannelInfo channelInfo = {};
+	  channelInfo.channel = i;
+	  channelInfo.isInput = ASIOTrue;
+
+	  if (ASIOGetChannelInfo(&channelInfo) == ASE_OK)
+		  info.inputChannelNames.emplace_back(channelInfo.name);
+	  else
+		  info.inputChannelNames.emplace_back();
+  }
+
+  for (long i = 0; i < outputChannels; ++i) {
+	  ASIOChannelInfo channelInfo = {};
+	  channelInfo.channel = i;
+	  channelInfo.isInput = ASIOFalse;
+
+	  if (ASIOGetChannelInfo(&channelInfo) == ASE_OK)
+		  info.outputChannelNames.emplace_back(channelInfo.name);
+	  else
+		  info.outputChannelNames.emplace_back();
+  }
+
   info.outputChannels = outputChannels;
   info.inputChannels = inputChannels;
   if ( info.outputChannels > 0 && info.inputChannels > 0 )
