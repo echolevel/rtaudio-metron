@@ -293,7 +293,9 @@ class RTAUDIO_DLL_PUBLIC RtAudio
     unsigned int ID{};              /*!< Device ID used to specify a device to RtAudio. */
     std::string name;               /*!< Character string device name. */
     unsigned int outputChannels{};  /*!< Maximum output channels supported by device. */
-    unsigned int inputChannels{};   /*!< Maximum input channels supported by device. */
+    std::vector<std::string> outputChannelNames; /* Brendan 2026-10-12: I want the drivers' labels to be readable in Metron */
+    unsigned int inputChannels{};   /*!< Maximum input channels supported by device. */    
+    std::vector<std::string> inputChannelNames;/* Brendan 2026-10-12: I want the drivers' labels to be readable in Metron */
     unsigned int duplexChannels{};  /*!< Maximum simultaneous input/output channels supported by device. */
     bool isDefaultOutput{false};         /*!< true if this is the default output device. */
     bool isDefaultInput{false};          /*!< true if this is the default input device. */
@@ -301,6 +303,7 @@ class RTAUDIO_DLL_PUBLIC RtAudio
     unsigned int currentSampleRate{};   /*!< Current sample rate, system sample rate as currently configured. */
     unsigned int preferredSampleRate{}; /*!< Preferred sample rate, e.g. for WASAPI the system sample rate. */
     RtAudioFormat nativeFormats{};  /*!< Bit mask of supported data formats. */
+    
   };
 
   //! The structure for specifying input or output stream parameters.
